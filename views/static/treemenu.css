@@ -1,0 +1,256 @@
+ul, #treemenu {
+  list-style-type: none;
+}
+.menuleaf {
+  display:block;
+  border: 1px dashed purple;
+  overflow: hidden;
+  white-space: nowrap;
+  cursor: pointer;
+  padding: 3px;
+  font-size: 1.1em;
+}
+.menuleaf:hover {
+  background: #DDD;
+}
+
+.menuleaf:hover{
+  visibility: visible;
+}
+
+#treemenu {
+  margin: 0;
+  padding: 0;
+}
+
+.caret {
+  cursor: pointer;
+  -webkit-user-select: none; /* Safari 3.1+ */
+  -moz-user-select: none; /* Firefox 2+ */
+  -ms-user-select: none; /* IE 10+ */
+  user-select: none;
+  background-color: #bbb;
+}
+
+.caret::before {
+  content: "\25B6";
+  color: black;
+  display: inline-block;
+  margin-right: 6px;
+}
+
+.caret-down::before {
+  -ms-transform: rotate(90deg); /* IE 9 */
+  -webkit-transform: rotate(90deg); /* Safari */'
+  transform: rotate(90deg);
+  content: "\25B7";
+}
+
+.nested {
+  display: none;
+  padding-inline-start: 0.75em;
+}
+
+.active {
+  display: block;
+}
+
+.selected {
+  background: #eee;
+}
+
+.sidenav {
+  height: 100%;
+  width: 0;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background-color: #111;
+  overflow-x: hidden;
+  transition: 0.5s;
+  padding-top: 60px;
+}
+@media screen and (max-height: 450px) {
+  .sidenav {padding-top: 15px;}
+}
+/* The navigation menu links */
+.sidenav a {
+  padding: 8px 8px 8px 32px;
+  text-decoration: none;
+  font-size: 1.5em;
+  color: #818181;
+  display: block;
+  transition: 0.3s;
+}
+/* When you mouse over the navigation links, change their color */
+.sidenav a:hover {
+  color: #f1f1f1;
+}
+
+/* Position and style the close button (top right corner) */
+.sidenav .closebtn {
+  position: absolute;
+  top: 0;
+  right: 25px;
+  font-size: 2em;
+  margin-left: 50px;
+  color: #d2d2d2;
+}
+
+/*<!--Custome style finishes here -->*/
+
+* {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+body {
+  color:#000000;
+  margin:0px;
+  font-size:100%;
+}
+.trytopnav {
+  height:40px;
+  overflow:hidden;
+  min-width:380px;
+  /*position:absolute;*/
+  width:100%;
+  top:99px;
+
+  background-color:#E7E9EB;
+}
+
+#dragbar{
+  position:absolute;
+  cursor: col-resize;
+  z-index:3;
+  padding:5px;
+}
+#shield {
+  display:none;
+  top:0;
+  left:0;
+  width:100%;
+  position:absolute;
+  height:100%;
+  z-index:4;
+}
+#container {
+  background-color:#E7E9EB;
+  width:100%;
+  overflow:auto;
+  position:absolute;
+  top:40px;
+  bottom:0;
+  height:auto;
+}
+#textareacontainer, #iframecontainer {
+  float:left;
+  height:100%;
+  width:50%;
+}
+#textarea, #iframe {
+  height:100%;
+  width:100%;
+  padding-bottom:10px;
+  padding-top:1px;
+}
+#textarea {
+  padding-left:10px;
+  padding-right:5px;  
+}
+#iframe {
+  padding-left:5px;
+  padding-right:10px;  
+}
+#textareawrapper {
+  width:100%;
+  height:100%;
+  background-color: #ffffff;
+  position:relative;
+  box-shadow:0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  overflow-y:auto;
+  overflow-x:hidden;
+}
+#iframewrapper {
+  width:100%;
+  height:100%;
+  -webkit-overflow-scrolling: touch;
+  background-color: #ffffff;
+  box-shadow:0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+}
+
+#iframeResult {
+  background-color: #ffffff;
+  height:100%;
+  width:100%;  
+}
+
+#textareacontainer.horizontal,#iframecontainer.horizontal{
+  height:50%;
+  float:none;
+  width:100%;
+}
+#textarea.horizontal{
+  height:100%;
+  padding-left:10px;
+  padding-right:10px;
+}
+#iframe.horizontal{
+  height:100%;
+  padding-right:10px;
+  padding-bottom:10px;
+  padding-left:10px;  
+}
+#container.horizontal{
+  min-height:200px;
+  margin-left:0;
+}
+
+@media screen and (max-width: 727px) {
+  .trytopnav {top:70px;}
+}
+@media screen and (max-width: 467px) {
+  .trytopnav {top:60px;}
+}
+@media only screen and (max-device-width: 768px) {
+  #iframewrapper {overflow: auto;}
+  #container     {min-width:310px;}
+  .stack         {display:none;}
+  .trytopnav     {min-width:310px;}
+}
+
+#iframewrapper {
+	
+}
+
+.trytopnav {
+  height:48px!important;
+}
+
+.trytopnav .search-container button {
+  float: right;
+  padding: 6px 10px;
+  margin-top: 4px;
+  margin-right: 16px;
+  background: #ddd;
+  font-size: 1.1em;
+  border: none;
+  cursor: pointer;
+}
+
+.trytopnav .search-container button:hover {
+  background: #ccc;
+}
+
+.trytopnav .search-container {
+  float: right;
+}
+
+.trytopnav input[type=search] {
+  padding: 6px;
+  margin-top: 4px;
+  font-size: 1.1em;
+  border: none;
+}
