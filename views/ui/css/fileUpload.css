@@ -1,0 +1,41 @@
+.upload-area{
+    width: 70%;
+    border: 2px solid lightgray;
+    border-radius: 3px;
+    margin: 0 auto;
+    text-align: center;
+    overflow: auto;
+    z-index: 100;
+}
+
+.upload-area:hover{
+    cursor: pointer;
+    z-index: 100;
+}
+
+.upload-area h1{
+    text-align: center;
+    font-weight: normal;
+    font-family: sans-serif;
+    line-height: 50px;
+    color: darkslategray;
+}
+
+.upload-area-hovering{
+    width: 70%;
+    border: 2px solid #90C65C;
+    background-color: #e2f2e2;
+    border-radius: 3px;
+    margin: 0 auto;
+    text-align: center;
+    overflow: auto;
+    z-index: 100;
+}
+
+.upload-area-hovering h1{
+    text-align: center;
+    font-weight: normal;
+    font-family: sans-serif;
+    line-height: 50px;
+    color: darkslategray;
+}

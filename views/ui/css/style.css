@@ -1,0 +1,98 @@
+#header{ /*Place holder*/}
+#main {/*Place holder*/}
+#footer {
+  position: fixed;
+  bottom: 0;
+  width: 98%;
+  //background: -moz-linear-gradient(top,  rgba(0,0,0,0.65) 0%, rgba(0,0,0,0) 10%, rgba(0,0,0,0) 13%); /* FF3.6-15 */
+  //background: -webkit-linear-gradient(top,  rgba(0,0,0,0.65) 0%,rgba(0,0,0,0) 10%,rgba(0,0,0,0) 13%); /* Chrome10-25,Safari5.1-6 */
+  //background: linear-gradient(to bottom,  rgba(0,0,0,0.65) 0%,rgba(0,0,0,0) 10%,rgba(0,0,0,0) 13%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  //filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a6000000', endColorstr='#00000000',GradientType=0 );  /* IE6-9 */
+  color: #bdbcbb;
+  height: 2%;
+}
+
+#fileHolder, #buttonHolder {
+    display: inline-block;
+    /*width: 330px;*/
+    height: 100%;
+    max-height: 100%;
+    margin-right: 20px;
+    vertical-align: top;
+    overflow: hidden;
+}
+#serviceTable{
+    display: table-row;
+    max-width: 45%;
+    overflow: hidden;
+}
+
+#indexOf, #indexOfModal{
+    font-weight: bold;
+    font-size: 150%;
+}
+
+#container {
+    height: 100%;
+    display: table-row;
+}
+
+.groupData {
+  padding: 10px;
+}
+
+.statusBar {
+  width: 100%;
+  height: 22px;
+  background: #1e5799; /* Old browsers */
+  background: -moz-linear-gradient(top,  #1e5799 0%, #2989d8 16%, #649cc9 30%, #7db9e8 100%); /* FF3.6-15 */
+  background: -webkit-linear-gradient(top,  #1e5799 0%,#2989d8 16%,#649cc9 30%,#7db9e8 100%); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to bottom,  #1e5799 0%,#2989d8 16%,#649cc9 30%,#7db9e8 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1e5799', endColorstr='#7db9e8',GradientType=0 ); /* IE6-9 */
+}
+
+.statusBar .label {
+    padding-left: 10px;
+    padding-top: 5px;
+    font-weight: bold;
+    min-width: 10%;
+    display:inline-block;
+}
+.refresh {
+  display:inline;
+  position: relative;
+  top: 0.4em;
+  right: -85%;
+  cursor: pointer;
+}
+
+.version {
+    padding-top: 5px;
+    padding-bottom: 15px;
+    font-weight: bold;
+    display:inline-block;
+}
+
+*{
+    padding: 0;
+    margin: 0;
+    font-family: Tahoma, Verdana, Arial, Adobe Helvetica, sans-serif;
+    font-size: 11px;
+}
+
+body { background-color:F5F5F5;}
+
+input.textExt{
+    height: 18px;
+    padding: 1px 1px 1px 3px;
+}
+
+.nameTextBox {
+    height: 40px;
+    width: 440px;
+    position: relative;
+    border: 2px solid #cdcdcd;
+    border-color: rgba(0, 0, 0, .14);
+    background-color: AliceBlue;
+    font-size: 20px;
+}
