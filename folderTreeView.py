@@ -47,6 +47,10 @@ def filesFolders(filepath = '/'):
       dicts[selcetedDict] = path_to_dict(serverRoot)
       dicts[selcetedDict]['timestamp'] = genTimeStamp()
    return dicts[selcetedDict]
+   
+@app.route('/getHelp')
+def filesFolders(filepath = '/'):
+   return template('help')
       
 def updateDict():
     global selcetedDict

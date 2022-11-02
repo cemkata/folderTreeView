@@ -9,6 +9,7 @@
 .xlsx
 .xls
 .lnk
+.msg
 
 ::HTML_folder_containing_css_js_etc
 _files
