@@ -18,7 +18,6 @@ skipPaths = []
 skipPrefix = []
 skipExtension = []
 
-webRootFolder = os.path.join('.', 'views/ui/')
 fileComands = ['move', 'copy', 'delete', 'rename', 'folder']
 
 @app.route('/uploadFile', method='POST')
@@ -44,10 +43,6 @@ def fileCmd():
        parameters = json.loads(comand)
        files = json.loads(parameters['fileNames'])
        fileComand(parameters['fileCMD'], parameters['sourceFolder'], parameters['targetFolder'], files)
-
-@app.route('/files/', method='get')
-def fileIndex():
-       redirect("/files/")
 
 @app.route('/getFileImages')
 def getFileImages():
