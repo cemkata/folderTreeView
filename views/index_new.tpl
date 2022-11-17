@@ -18,6 +18,7 @@
 <![endif]-->
 <body>
 <div class="trytopnav">
+	  <div id = "logo"></div>
 	  <div class="search-container">
 		<!--<form action="/action_page.php">-->
 		  <input type="search" placeholder="Search.." name="search" id="searchinput">
@@ -41,12 +42,12 @@
   </div>
   <div id="iframecontainer" style="width: 85%;">
     <div id="iframe">
-      <div id="iframewrapper"><iframe frameborder="0" id="iframeResult" name="iframeResult" allowfullscreen="true"></iframe></div>
+      <div id="iframewrapper"><iframe frameborder="0" id="iframeResult" name="iframeResult" allowfullscreen="true" src="/getHelp"></iframe></div>
     </div>
   </div>
 </div>
 <script src="/static/treemenu.js"></script>
 </body></html>
 
-<!-- Version 2.3-->
-<!-- © Copyright 2021, Angel Garabitov -->
+<!-- Version 3.2-->
+<!-- © Copyright 2022, Angel Garabitov -->
