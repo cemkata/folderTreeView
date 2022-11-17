@@ -74,7 +74,6 @@ def index(filepath):
              return template('files', subFolder = filepath)
        if '..' in filepath: #Security check and go to index
            return HTTPError(404, "Page not found")
-
        jsonOutput = json.dumps(getFolderContent(filepath))
        return jsonOutput
 

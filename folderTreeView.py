@@ -142,7 +142,7 @@ if os.path.isfile(cnfgFile):
             #be sure that the folder exist
             if not os.path.exists(RecycleBinPath):
                os.makedirs(RecycleBinPath)
-        app.mount('/files/', file_orginiser.app)
+        app.mount('/files', file_orginiser.app)
     else:
         @app.route('/files/<filepath:path>')
         def fileshandler(filepath = '/'):
