@@ -1,6 +1,6 @@
 var fileIcons;//No need for default value
 var fileIconsReady = false;//No need ???
-const rootPath = "/files";
+const rootPath = ".";
 var filesReady = false; //Added to cleanVals
 var showDialog = true; //Added to cleanVals
 var fileUpdate = true; //Added to cleanVals
@@ -123,7 +123,7 @@ function fillTable(jd){
 function listFiles(){
     $("#fileHolder").html(emptyTable);
     if(fileIconsReady == false){
-       $.getJSON("/getFileImages", setFilefileIcons);
+       $.getJSON("./getFileImages", setFilefileIcons);
     }
 	url = rootPath + subFolder + "?client=JS";
     filesReady = false;
@@ -232,7 +232,7 @@ function getSelectedFiles(){
 function uploadFileCmd(){
    var msg = `<div id="fileHolderModal">`;
    
-   msg +=`<form id="fileForm" action="/uploadFile" method="post" enctype="multipart/form-data">
+   msg +=`<form id="fileForm" action="./uploadFile" method="post" enctype="multipart/form-data">
   <h4>Select a file:<br/><br/><h4> 
   <a href="#" class ="myButtonDisabled" id="fileSelector">Select file for upload</a><br/>
   <input type="file" name="upload" id="fileSelectorInput" style="opacity:0;"/>
@@ -335,7 +335,7 @@ function sendFileCMD(){
   }
     $("body").append(waitingAnimation);
     $("#modalBar").css({ display: "block" });
-    url = "/fileCmd";
+    url = "./fileCmd";
     jsonFilenames = JSON.stringify(fileNames);
     argument = JSON.stringify({fileNames:jsonFilenames, sourceFolder: sourceFolder, targetFolder: targetFolder, fileCMD:fileCMDName});
     fileUpdate = false;
