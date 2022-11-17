@@ -13,14 +13,23 @@ How to configure in config.ini
 	- 0 is disabled. Each reload of the page will scan the folder. Imidiate update but bad loading times
 	- 1,2,3 ... is in munites (no minus (positive))
 	- -1,-2,-4 ... in in hours (negative)
-- sortFlag = True Posible values ; Posible values true, false, none
+- sortFlag - Posible values true, false, none
+- fileOrganaserFlag - Posible values true, false
+
+- ***In section FILEORGANISER:***
+- recycle_bin_enabled - File organiser should it delete the file or mode to hidden folder
+	- 0 is disabled (Files are deleted)
+	- 1 is enabled (Files are moved to the configured bellow recyclebin_folder)
+- recyclebin_folder - Path where the Deleted file will be stored
+
 
 The format of the skip files (skipPath/skipPrefix/skipExtension) is  
 Each path,prefix/extension on new line. If you need to coment a line insert :: infrom the line.  
 Use the provided 3 files are exsample.  
 
 You can start the folderTreeView2Tkinter.pyw as Desktop Tkinter application (Linux and MAC migth need additional packages).  
-file_orginiser.py is additimal application working in browser, that allow to move rename and upload files to the base folder. The file_orginiser_config.ini contain the settings for this app.  
+file_orginiser.py is a module for folderTreeView. The settings are included in config.ini.
+To access the the file organiser hold Ctrl + Alt and click in the upper left corner of the page.
 
 ***Versions***  
-*folderTreeView v2.9*  
+*folderTreeView v3.0*  

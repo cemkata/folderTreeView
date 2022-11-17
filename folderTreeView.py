@@ -3,9 +3,11 @@ from bottle import Bottle, run, static_file, template, abort
 import os
 import threading
 from datetime import datetime
+import re
+import file_orginiser
 
 app = Bottle()
-ver = 2.9
+ver = 3.0
 
 cnfgFile = "config.ini"
 
@@ -25,6 +27,10 @@ def favicon():
 def static_content(filepath):
      return static_file(filepath, root='./views/static')
 
+@app.route('/ui/<filepath:path>')
+def staticFiles(filepath):
+    return static_file(filepath,  root='./views/ui')
+
 @app.route('/')
 def index(filepath = '/'):
    return template('index_new', title = "Content of "+titleFolder)
@@ -32,7 +38,6 @@ def index(filepath = '/'):
 @app.route('/old')
 def old_index():
     return template('index_old', title = "Content of "+titleFolder)
-    
 
 @app.route('/<filepath:path>')
 def filesFolders(filepath = '/'):
@@ -47,11 +52,11 @@ def filesFolders(filepath = '/'):
       dicts[selcetedDict] = path_to_dict(serverRoot)
       dicts[selcetedDict]['timestamp'] = genTimeStamp()
    return dicts[selcetedDict]
-   
+
 @app.route('/getHelp')
 def filesFolders(filepath = '/'):
    return template('help')
-      
+
 def updateDict():
     global selcetedDict
     didx = (selcetedDict + 1) % 2
@@ -81,7 +86,7 @@ def path_to_dict(path):
             folderContent = os.listdir(path) #Get the content of the folder
             if sortFlag is not None:
                 folderContent.sort(reverse=sortFlag) #Sort the list in reverse order
-            for x in folderContent: 
+            for x in folderContent:
                 item = path_to_dict(os.path.join(path,x))
                 if item:
                     itemsList.append(item)
@@ -90,7 +95,7 @@ def path_to_dict(path):
             d['type'] = "file"
         return d
     return False
-    
+
 def genTimeStamp():
     # datetime object containing current date and time
     now = datetime.now()
@@ -105,12 +110,15 @@ if os.path.isfile(cnfgFile):
     config.read(cnfgFile)
     port = config['DEFAULT']['Port']
     host = config['DEFAULT']['ip']
+    ip_pattern = re.compile('(?:^|\b(?<!\.))(?:1?\d\d?|2[0-4]\d|25[0-5])(?:\.(?:1?\d\d?|2[0-4]\d|25[0-5])){3}(?=$|[^\w.])')
+    if not ip_pattern.match(host):
+        raise KeyError('Server IP address')
     serverRoot = config['DEFAULT']['serverRoot']
     docFolder, titleFolder = os.path.split(serverRoot)
     cnfgSkipFile = config['DEFAULT']['skipPath']
     cnfgSkipPrefix = config['DEFAULT']['skipPrefix']
     cnfgSkipExtension = config['DEFAULT']['skipExtension']
-    updateInterval = int(config['DEFAULT']['updateInterval'])    
+    updateInterval = int(config['DEFAULT']['updateInterval'])
     sortFlag = config['DEFAULT']['sortFlag']
     if sortFlag.lower() == "true":
         sortFlag = True
@@ -118,7 +126,28 @@ if os.path.isfile(cnfgFile):
         sortFlag = False
     else:
         sortFlag = None
-    
+        
+        
+    fileOrganaserFlag = config['DEFAULT']['fileOrganaserFlag']
+    if fileOrganaserFlag.lower() == "true":
+        file_orginiser.mediaRootFolder = serverRoot
+        file_orginiser.RecycleBinEnabled = config['FILEORGANISER']['recycle_bin_enabled']
+        file_orginiser.RecycleBin = config['FILEORGANISER']['recyclebin_folder']
+        if int(file_orginiser.RecycleBinEnabled) == 1:
+        #Flag for deleteing from the disk or
+        #just moving he files out from the media server root folder
+        #to folder specified in RecycleBin
+        #When the value is set to True the files are moved to RecycleBin. By Flase the files are deleted   RecycleBin = config_trash['DEFAULT']['recyclebin_folder']
+            RecycleBinPath = os.path.join(file_orginiser.mediaRootFolder, file_orginiser.RecycleBin)
+            #be sure that the folder exist
+            if not os.path.exists(RecycleBinPath):
+               os.makedirs(RecycleBinPath)
+        app.mount('/files/', file_orginiser.app)
+    else:
+        @app.route('/files/<filepath:path>')
+        def fileshandler(filepath = '/'):
+           abort(404, "Not cofiured") 
+
 else:
     print("Using default config")
     port = 8000
@@ -140,6 +169,7 @@ if os.path.isfile(cnfgSkipFile):
             if not line.startswith(skipComents):
                 skipPaths.append(line.rstrip())
         skipPaths = list(filter(None, skipPaths))
+        file_orginiser.skipPaths = skipPaths
 else:
     print("File not found " + cnfgSkipFile)
     print("  Skiping skipPaths configuration")
@@ -149,19 +179,21 @@ if os.path.isfile(cnfgSkipPrefix):
         print("Loading " + cnfgSkipPrefix)
         for line in infile:
             if not line.startswith(skipComents):
-                skipPrefix.append(line.rstrip())   
-        skipPrefix = list(filter(None, skipPrefix))            
+                skipPrefix.append(line.rstrip())
+        skipPrefix = list(filter(None, skipPrefix))
+        file_orginiser.skipPrefix = skipPrefix
 else:
     print("File not found " + cnfgSkipPrefix)
     print("  Skiping skipPrefix configuration")
 
-if os.path.isfile(cnfgSkipExtension):  
+if os.path.isfile(cnfgSkipExtension):
     with open(cnfgSkipExtension, 'r', encoding='utf-8') as infile:
         print("Loading " + cnfgSkipExtension)
         for line in infile:
             if not line.startswith(skipComents):
                 skipExtension.append(line.rstrip())
         skipExtension = list(filter(None, skipExtension))
+        file_orginiser.skipExtension = skipExtension
 else:
     print("File not found " + cnfgSkipExtension)
     print("  Skiping skipExtension configuration")
