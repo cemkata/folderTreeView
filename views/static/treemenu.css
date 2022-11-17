@@ -71,8 +71,19 @@ ul, #treemenu {
   transition: 0.5s;
   padding-top: 60px;
 }
-@media screen and (max-height: 450px) {
-  .sidenav {padding-top: 15px;}
+@media screen and (max-width: 467px) {
+  .sidenav {padding-top: 15px;
+		  height: 100%;
+		  width: 0;
+		  position: fixed;
+		  z-index: 1;
+		  top: 33%;
+		  left: 0;
+		  background-color: #111;
+		  overflow-x: hidden;
+		  transition: 0.5s;
+		  padding-top: 15px;
+	}
 }
 /* The navigation menu links */
 .sidenav a {
@@ -246,6 +257,13 @@ body {
 
 .trytopnav .search-container {
   float: right;
+}
+
+.trytopnav #logo {
+  float: left;
+  /*background: #abc;*/
+  height: 35px;
+  width: 65px;
 }
 
 .trytopnav input[type=search] {
