@@ -16,26 +16,8 @@ import sys
 
 import os
 import threading
-from bottle import ServerAdapter
 
-ver = 1.1
-
-class MyWSGIRefServer(ServerAdapter):
-    server = None
-
-    def run(self, handler):
-        from wsgiref.simple_server import make_server, WSGIRequestHandler
-        if self.quiet:
-            class QuietHandler(WSGIRequestHandler):
-                def log_request(*args, **kw): pass
-            self.options['handler_class'] = QuietHandler
-        self.server = make_server(self.host, self.port, handler, **self.options)
-        self.server.serve_forever()
-
-    def stop(self):
-        # self.server.server_close() <--- alternative but causes bad fd exception
-        print("Shuting down.")
-        self.server.shutdown()
+ver = 1.2
 
 class ExampleApp(tk.Tk):
     def __init__(self):
@@ -201,10 +183,8 @@ def _on_shiftmouse(event, widget):
 def mainFunction():
     import folderTreeView
 
-    global server
-    server = MyWSGIRefServer(host = folderTreeView.host,\
-                                  port = folderTreeView.port)
-    S = threading.Timer(0.5, folderTreeView.app.run, kwargs={'server': server, 'debug': True})
+    S = threading.Timer(0.5, folderTreeView.app.run, kwargs={'port': folderTreeView.port, \
+                                                             'host': folderTreeView.host, 'debug': True})
     S.start()
 
 app_Tk = ExampleApp()
@@ -219,8 +199,6 @@ identifier to cancel scheduling with after_cancel."""
 def on_closing():
     if tk.messagebox.askokcancel("Quit", "Do you want to quit?"):
         app_Tk.destroy()
-        #global server
-        #server.stop()
         
         #Perform harakiri
         pid = os.getpid()
