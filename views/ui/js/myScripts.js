@@ -232,7 +232,7 @@ function getSelectedFiles(){
 function uploadFileCmd(){
    var msg = `<div id="fileHolderModal">`;
    
-   msg +=`<form id="fileForm" action=`+rootPath+`"/uploadFile" method="post" enctype="multipart/form-data">
+   msg +=`<form id="fileForm" action="`+rootPath+`/uploadFile" method="post" enctype="multipart/form-data">
   <h4>Select a file:<br/><br/><h4> 
   <a href="#" class ="myButtonDisabled" id="fileSelector">Select file for upload</a><br/>
   <input type="file" name="upload" id="fileSelectorInput" style="opacity:0;"/>
@@ -356,7 +356,7 @@ function sendFile(inputFile){
     formData.append('targetFolder', subFolder);
 
     $.ajax({
-        url: '/uploadFile',  
+        url: rootPath+'/uploadFile',  
         type: 'POST',
         data: formData,
         success: function (data) {
