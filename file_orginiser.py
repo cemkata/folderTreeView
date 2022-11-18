@@ -6,7 +6,7 @@ import time
 import shutil
 from urllib.parse import unquote
 
-ver="2.0"
+ver="2.1"
 
 app = Bottle()
 

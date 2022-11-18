@@ -7,7 +7,7 @@ import re
 import file_orginiser
 
 app = Bottle()
-ver = 3.0
+ver = 3.1
 
 cnfgFile = "config.ini"
 
