@@ -60,7 +60,8 @@ def emptyIndex():
 
 @app.route('/<filepath:path>', method='get')
 def index(filepath):
-   filepath = filepath.replace("/","",1)# strip the first slash "/" otherwise there is unexpected bahaviour of os.path.join or in this case just join
+   if filepath.startswith("/"):
+      filepath = filepath.replace("/","",1)# strip the first slash "/" otherwise there is unexpected bahaviour of os.path.join or in this case just join
    if filepath.startswith("/"):
       return HTTPError(404, "Page not found")
    filepath = unquote(filepath)
