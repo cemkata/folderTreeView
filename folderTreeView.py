@@ -7,7 +7,7 @@ import re
 import file_orginiser
 
 app = Bottle()
-ver = 3.1
+ver = 3.2
 
 cnfgFile = "config.ini"
 
@@ -213,4 +213,5 @@ else:
    updateDict()
 
 print(f"Starting treeViewDocu - version {ver}")
-run(app, host = host, port = port, debug=True)
+if __name__ == "__main__":
+    run(app, host = host, port = port, debug=True)
