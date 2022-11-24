@@ -277,8 +277,11 @@ function fileMoveCopyCmd(){
        return;
    }
    if(!filesReady){ //Wait until the file list is loaded
-      showInModalFilesTimer = setTimeout(fileMoveCopyCmd, 10); // check again in few seconds
-	  return;
+      if(jd === "undefined"){
+		  listFiles();
+		  showInModalFilesTimer = setTimeout(fileMoveCopyCmd, 10); // check again in few seconds
+		  return;
+	  }
    }
    var msg ="<h4>Do you want to " + fileCMDName +" selected files to "+subFolder+"?</h4>";
    msg += `<div id="fileHolderModal">`;
