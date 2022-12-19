@@ -3,6 +3,7 @@ This will list the content of a folder and alow the viewing of selected file.
 It need only python no other frameworks execpt [bottle framework](https://github.com/bottlepy/bottle).  
 
 How to configure in config.ini  
+- ***In DEFAULT section:***
 - port - Port where the webserver will listen
 - ip - Address where ther server will listen. 0.0.0.0 will listen on any v4 IP.
 - serverRoot - Folder that will be listed
