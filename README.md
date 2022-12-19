@@ -36,4 +36,4 @@ file_orginiser.py is a module for folderTreeView. The settings are included in c
 To access the the file organiser hold Ctrl + Alt and click in the upper left corner of the page.
 
 ***Versions***  
-*folderTreeView v3.1*  
+*folderTreeView v3.5*  
