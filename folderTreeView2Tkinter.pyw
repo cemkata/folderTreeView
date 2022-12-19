@@ -17,7 +17,7 @@ import sys
 import os
 import threading
 
-ver = 1.2
+ver = 1.3
 
 class ExampleApp(tk.Tk):
     def __init__(self):
@@ -38,6 +38,10 @@ class ExampleApp(tk.Tk):
 
         sys.stdout = TextRedirector(self.text, "stdout")
         sys.stderr = TextRedirector(self.text, "stderr")
+        
+    def enable_log(self, stdout_file, stderr_file):
+        sys.stdout = TextRedirectorToFile(self.text, stdout_file, "stdout")
+        sys.stderr = TextRedirectorToFile(self.text, stderr_file, "stderr")
 
     #def print_stdout(self):
     #    '''Illustrate that using 'print' writes to stdout'''
@@ -58,7 +62,20 @@ class TextRedirector(object):
         self.widget.insert("end", str, (self.tag,))
         self.widget.see('end')
         self.widget.configure(state="disabled")
+        
+class TextRedirectorToFile(object):
+    def __init__(self, widget, file_name, tag="stdout"):
+        self.widget = widget
+        self.tag = tag
+        self.fp = open(file_name, mode="a")
 
+    def write(self, str):
+        self.widget.configure(state="normal")
+        self.widget.insert("end", str, (self.tag,))
+        self.widget.see('end')
+        self.widget.configure(state="disabled")
+        self.fp.write(str)
+ 
 # The following code is added to facilitate the Scrolled widgets you specified.
 class AutoScroll(object):
     '''Configure the scrollbars for a widget.'''
@@ -182,7 +199,12 @@ def _on_shiftmouse(event, widget):
 
 def mainFunction():
     import folderTreeView
+    
+    if folderTreeView.log2File:
+        app_Tk.enable_log(folderTreeView.app_log, folderTreeView.access_log)
 
+        #with StdoutTee(app_log), StderrTee(access_log)
+        
     S = threading.Timer(0.5, folderTreeView.app.run, kwargs={'port': folderTreeView.port, \
                                                              'host': folderTreeView.host, 'debug': True})
     S.start()
@@ -198,8 +220,17 @@ are given as parameters to the function call.  Return
 identifier to cancel scheduling with after_cancel."""
 def on_closing():
     if tk.messagebox.askokcancel("Quit", "Do you want to quit?"):
+
+        try:
+            sys.stdout.fp.flush()
+            sys.stdout.fp.close()
+            sys.stderr.fp.flush()
+            sys.stderr.fp.close()
+        except AttributeError:
+            pass
+   
         app_Tk.destroy()
-        
+
         #Perform harakiri
         pid = os.getpid()
         from signal import SIGTERM

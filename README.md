@@ -22,6 +22,10 @@ How to configure in config.ini
 	- 1 is enabled (Files are moved to the configured bellow recyclebin_folder)
 - recyclebin_folder - Path where the Deleted file will be stored
 
+- ***In section APPLOGER:***
+- log2File -  Posible values true, false
+- access_log - file for the access logs
+- app_log - file with other application logs, if there is any
 
 The format of the skip files (skipPath/skipPrefix/skipExtension) is  
 Each path,prefix/extension on new line. If you need to coment a line insert :: infrom the line.  

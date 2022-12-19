@@ -7,7 +7,7 @@ import re
 import file_orginiser
 
 app = Bottle()
-ver = 3.2
+ver = 3.5
 
 cnfgFile = "config.ini"
 
@@ -147,7 +147,15 @@ if os.path.isfile(cnfgFile):
         @app.route('/files/<filepath:path>')
         def fileshandler(filepath = '/'):
            abort(404, "Not cofiured") 
-
+           
+    log2File = config['APPLOGER']['log2File']
+    if log2File.lower() == "true":
+        log2File = True
+        access_log = config['APPLOGER']['access_log']
+        app_log = config['APPLOGER']['app_log']
+    else:
+        log2File = False
+    
 else:
     print("Using default config")
     port = 8000
@@ -158,6 +166,7 @@ else:
     cnfgSkipExtension = "skipExtension.txt"
     updateInterval = 0;
     sortFlag = None
+    log2File = False
     #serverRoot = config['DEFAULT']['serverRoot']
     docFolder, titleFolder = os.path.split(serverRoot)
 
@@ -214,4 +223,10 @@ else:
 
 print(f"Starting treeViewDocu - version {ver}")
 if __name__ == "__main__":
-    run(app, host = host, port = port, debug=True)
+    if log2File:
+        import sys
+        from tee import StdoutTee, StderrTee
+        with StdoutTee(app_log), StderrTee(access_log):
+            run(app, host = host, port = port, debug=True)
+    else:
+        run(app, host = host, port = port, debug=True)
