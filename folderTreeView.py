@@ -4,7 +4,6 @@ import os
 import threading
 from datetime import datetime
 import re
-import file_orginiser
 
 app = Bottle()
 ver = 3.5
@@ -130,6 +129,7 @@ if os.path.isfile(cnfgFile):
         
     fileOrganaserFlag = config['DEFAULT']['fileOrganaserFlag']
     if fileOrganaserFlag.lower() == "true":
+        import file_orginiser
         file_orginiser.mediaRootFolder = serverRoot
         file_orginiser.RecycleBinEnabled = config['FILEORGANISER']['recycle_bin_enabled']
         file_orginiser.RecycleBin = config['FILEORGANISER']['recyclebin_folder']
