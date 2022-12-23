@@ -6,7 +6,7 @@ from datetime import datetime
 import re
 
 app = Bottle()
-ver = 3.5
+ver = 3.6
 
 cnfgFile = "config.ini"
 
@@ -60,8 +60,13 @@ def updateDict():
     global selcetedDict
     didx = (selcetedDict + 1) % 2
     dicts[didx] = path_to_dict(serverRoot)
+    if not dicts[didx]:
+        print("Configuration problem")
+        from sys import exit
+        exit(1)
     dicts[didx]['timestamp'] = genTimeStamp()
     selcetedDict = didx
+    
     threading.Timer(updateInterval, updateDict,[]).start()
 
 def checkHidenFiles(instring):
@@ -76,7 +81,7 @@ def checkHidenFiles(instring):
     return True
 
 def path_to_dict(path):
-    baseName = os.path.basename(path)
+    baseName = os.path.basename(path)    
     if(checkHidenFiles(baseName)):
         d = {'name': baseName}
         if os.path.isdir(path):
@@ -171,41 +176,26 @@ else:
     docFolder, titleFolder = os.path.split(serverRoot)
 
 ##
-if os.path.isfile(cnfgSkipFile):
-    with open(cnfgSkipFile, 'r', encoding='utf-8') as infile:
-        print("Loading " + cnfgSkipFile)
-        for line in infile:
-            if not line.startswith(skipComents):
-                skipPaths.append(line.rstrip())
-        skipPaths = list(filter(None, skipPaths))
-        file_orginiser.skipPaths = skipPaths
-else:
-    print("File not found " + cnfgSkipFile)
-    print("  Skiping skipPaths configuration")
 
-if os.path.isfile(cnfgSkipPrefix):
-    with open(cnfgSkipPrefix, 'r', encoding='utf-8') as infile:
-        print("Loading " + cnfgSkipPrefix)
-        for line in infile:
-            if not line.startswith(skipComents):
-                skipPrefix.append(line.rstrip())
-        skipPrefix = list(filter(None, skipPrefix))
-        file_orginiser.skipPrefix = skipPrefix
-else:
-    print("File not found " + cnfgSkipPrefix)
-    print("  Skiping skipPrefix configuration")
+skipedContent = [
+                {'config':cnfgSkipFile, 'ignoreList':skipPaths, 'cnfigName':'skipPaths'},
+                {'config':cnfgSkipPrefix, 'ignoreList':skipPrefix, 'cnfigName':'skipPrefix'},
+                {'config':cnfgSkipExtension, 'ignoreList':skipExtension, 'cnfigName':'skipExtension'}]
 
-if os.path.isfile(cnfgSkipExtension):
-    with open(cnfgSkipExtension, 'r', encoding='utf-8') as infile:
-        print("Loading " + cnfgSkipExtension)
-        for line in infile:
-            if not line.startswith(skipComents):
-                skipExtension.append(line.rstrip())
-        skipExtension = list(filter(None, skipExtension))
-        file_orginiser.skipExtension = skipExtension
-else:
-    print("File not found " + cnfgSkipExtension)
-    print("  Skiping skipExtension configuration")
+for sk in skipedContent:
+    if os.path.isfile(sk['config']):
+        with open(sk['config'], 'r', encoding='utf-8') as infile:
+            print(f"Loading {sk['config']}")
+            tmpList = []
+            for line in infile:
+                if not line.startswith(skipComents):
+                    tmpList.append(line.rstrip())
+            sk['ignoreList'] = list(filter(None, tmpList))
+            if fileOrganaserFlag.lower() == "true":
+                file_orginiser.skipPaths = sk['ignoreList']
+    else:
+        print(f"File not found {sk['config']}")
+        print(f"  Skiping {sk['cnfigName']} configuration")
 ##
 
 if updateInterval == 0:

@@ -26,7 +26,7 @@ How to configure in config.ini
 - ***In section APPLOGER:***
 - log2File -  Posible values true, false
 - access_log - file for the access logs
-- app_log - file for other application logs, if there is any
+- app_log - file with other application logs, if there is any
 
 The format of the skip files (skipPath/skipPrefix/skipExtension) is  
 Each path,prefix/extension on new line. If you need to coment a line insert :: infrom the line.  
@@ -37,4 +37,5 @@ file_orginiser.py is a module for folderTreeView. The settings are included in c
 To access the the file organiser hold Ctrl + Alt and click in the upper left corner of the page.
 
 ***Versions***  
-*folderTreeView v3.5*  
+*folderTreeView v3.6*  
+*folderTreeView GUI v1.3*  
