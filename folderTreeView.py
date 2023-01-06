@@ -6,7 +6,7 @@ from datetime import datetime
 import re
 
 app = Bottle()
-ver = 3.6
+ver = 3.7
 
 cnfgFile = "config.ini"
 
@@ -178,9 +178,9 @@ else:
 ##
 
 skipedContent = [
-                {'config':cnfgSkipFile, 'ignoreList':skipPaths, 'cnfigName':'skipPaths'},
-                {'config':cnfgSkipPrefix, 'ignoreList':skipPrefix, 'cnfigName':'skipPrefix'},
-                {'config':cnfgSkipExtension, 'ignoreList':skipExtension, 'cnfigName':'skipExtension'}]
+                {'config':cnfgSkipFile, 'ignoreList':[], 'cnfigName':'skipPaths'},
+                {'config':cnfgSkipPrefix, 'ignoreList':[], 'cnfigName':'skipPrefix'},
+                {'config':cnfgSkipExtension, 'ignoreList':[], 'cnfigName':'skipExtension'}]
 
 for sk in skipedContent:
     if os.path.isfile(sk['config']):
@@ -196,6 +196,10 @@ for sk in skipedContent:
     else:
         print(f"File not found {sk['config']}")
         print(f"  Skiping {sk['cnfigName']} configuration")
+        
+skipPaths     = skipedContent[0]['ignoreList']
+skipPrefix    = skipedContent[1]['ignoreList']
+skipExtension = skipedContent[2]['ignoreList']
 ##
 
 if updateInterval == 0:
