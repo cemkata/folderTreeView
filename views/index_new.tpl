@@ -42,7 +42,7 @@
   </div>
   <div id="iframecontainer" style="width: 85%;">
     <div id="iframe">
-      <div id="iframewrapper"><iframe frameborder="0" id="iframeResult" name="iframeResult" allowfullscreen="true" src="/getHelp"></iframe></div>
+      <div id="iframewrapper"><iframe frameborder="0" id="iframeResult" name="iframeResult" allowfullscreen="true" src=""></iframe></div>
     </div>
   </div>
 </div>
