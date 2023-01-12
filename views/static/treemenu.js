@@ -404,4 +404,4 @@ document.getElementById("logo").addEventListener("click", function(event) {
   }
 });
 
-console.log("treemenu version 3.3")
+console.log("treemenu version 3.4")
