@@ -167,6 +167,7 @@ function iniTree(){
 			toggler[0].classList.toggle("caret-down");
 			toggler[0].title="Updated at " + treeValues.timestamp + "\nClick to refresh"; //add the timestamp to the tree
 			toggler[0].addEventListener("click", iniTree);
+			pdfView.src = "./getHelp";
 		}
 	};
 	xhttp.open("GET", "/getFiles", true);
