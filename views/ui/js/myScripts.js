@@ -226,8 +226,8 @@ function getSelectedFiles(){
           sourceFolder = subFolder;
           return true;
       }
-   }else if(fileNames.length > 0){
-      return true;
+   }else if (fileNames.length > 0){
+	   return true;
    }
 }
 
