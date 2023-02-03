@@ -33,9 +33,9 @@ Each path,prefix/extension on new line. If you need to coment a line insert :: i
 Use the provided 3 files are exsample.  
 
 You can start the folderTreeView2Tkinter.pyw as Desktop Tkinter application (Linux and MAC migth need additional packages).  
-file_orginiser.py is a module for folderTreeView. The settings are included in config.ini.
-To access the the file organiser hold Ctrl + Alt and click in the upper left corner of the page.
-You can export the content of the folder as html just start export_folder_2_html.py, the out put file will be store under html_output(folder will be created if doesn't exist).
+file_orginiser.py is a module for folderTreeView. The settings are included in config.ini.  
+To access the the file organiser hold Ctrl + Alt and click in the upper left corner of the page.  
+You can export the content of the folder as html just start export_folder_2_html.py, the out put file will be store under html_output(folder will be created if doesn't exist).  
 
 ***Versions***  
 *folderTreeView v3.7*  
