@@ -4,9 +4,10 @@ import os
 import threading
 from datetime import datetime
 import re
+import collections
 
 app = Bottle()
-ver = 3.7
+ver = 3.8
 
 cnfgFile = "config.ini"
 
@@ -56,6 +57,8 @@ def filesFolders(filepath = '/'):
 def filesFolders(filepath = '/'):
    return template('help')
 
+updateTimer = None
+
 def updateDict():
     global selcetedDict
     didx = (selcetedDict + 1) % 2
@@ -66,8 +69,9 @@ def updateDict():
         exit(1)
     dicts[didx]['timestamp'] = genTimeStamp()
     selcetedDict = didx
-    
-    threading.Timer(updateInterval, updateDict,[]).start()
+    global updateTimer
+    updateTimer = threading.Timer(updateInterval, updateDict,[]) #this will allow stoping the thread
+    updateTimer.start()
 
 def checkHidenFiles(instring):
     if(instring in skipPaths):
@@ -80,16 +84,30 @@ def checkHidenFiles(instring):
             return False
     return True
 
-def path_to_dict(path):
-    baseName = os.path.basename(path)    
+def path_to_dict(path, webSort = True):
+    baseName = os.path.basename(path)
+    d = collections.OrderedDict()
     if(checkHidenFiles(baseName)):
         d = {'name': baseName}
         if os.path.isdir(path):
             d['type'] = "directory"
             itemsList = []
             folderContent = os.listdir(path) #Get the content of the folder
-            if sortFlag is not None:
-                folderContent.sort(reverse=sortFlag) #Sort the list in reverse order
+            if webSort: #The web page sort the content automaticly
+                if sortFlag is not None:
+                    folderContent.sort(reverse=sortFlag) #Sort the list in reverse order
+            else:
+                files = []
+                folders = []
+                for fc in folderContent:
+                   if os.path.isdir(os.path.join(path,fc)):
+                       folders.append(fc)
+                   else:
+                       files.append(fc)
+                if sortFlag is not None:
+                    folders.sort(reverse=(not sortFlag))
+                    files.sort(reverse=(not sortFlag))
+                    folderContent = folders + files
             for x in folderContent:
                 item = path_to_dict(os.path.join(path,x))
                 if item:
