@@ -124,7 +124,7 @@
 		</style>
 </head>
 	<body>
-		<h1><b>{title}</b></h1>
+		<h1><b>{{title}}</b></h1>
 		<p>
 		   <div class="expandLink"> 
 			  <a href="#" style="text-decoration: none;">Expand all sections</a><br>
