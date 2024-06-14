@@ -7,7 +7,7 @@ import re
 import collections
 
 app = Bottle()
-ver = 3.8
+ver = 3.9
 
 cnfgFile = "config.ini"
 
@@ -135,7 +135,7 @@ if os.path.isfile(cnfgFile):
     ip_pattern = re.compile('(?:^|\b(?<!\.))(?:1?\d\d?|2[0-4]\d|25[0-5])(?:\.(?:1?\d\d?|2[0-4]\d|25[0-5])){3}(?=$|[^\w.])')
     if not ip_pattern.match(host):
         raise KeyError('Server IP address')
-    serverRoot = config['DEFAULT']['serverRoot']
+    serverRoot = os.path.abspath(config['DEFAULT']['serverRoot'])
     docFolder, titleFolder = os.path.split(serverRoot)
     cnfgSkipFile = config['DEFAULT']['skipPath']
     cnfgSkipPrefix = config['DEFAULT']['skipPrefix']
