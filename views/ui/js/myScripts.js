@@ -140,7 +140,9 @@ function openFolder(evt, folderUrl, upFolder){
   if (folderUrl == ""){
      subFolder = "/";//*TODO returning back*/
   }else{
-     folderUrl = folderUrl.replace(/([/'"])/g, "'");
+     //folderUrl = folderUrl.replace(/([/'"])/g, "'");
+     // Bad fix but seems to work
+     folderUrl.replace(/([/'"])/g, "/");
      subFolder = subFolder + folderUrl + "/";
   }
   listFiles();
