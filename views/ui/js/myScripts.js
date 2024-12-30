@@ -42,71 +42,78 @@ function setFilefileIcons(jd){
 }
 
 function fillTable(jd){
-   $('#blankIco').attr("src", fileIcons.blankIcon);
+   let tableTxt = ""
    if (typeof jd.error === "string"){
-       tableTxt=`<div class="row">
+       tableTxt+=`<div class="row">
       <div class="cell">
         <img src="`+fileIcons.blankIcon+`" alt="[FILE]">
       </div>
       <div class="cell">
-        `+jd.error+`
+        <b>Error:</b>  `+jd.error+`
       </div>
       <div class="cell"></div>
       <div class="cell"></div>
     </div>
     `;
-      $("#tableHeader").after(tableTxt);
-      return;
-   }
+      //$("#tableHeader").after(tableTxt);
+      //return;
+   }else{
+       tableTxt+=`<div class="row">
+          <div class="cell">
+            <input type="checkbox" name="all" id="checkAllChBox"/>
+          </div>
+          <div class="cell">
+            <img src="`+fileIcons.backIcon+`" alt="[PARENTDIR]">
+          </div>
+          <div onclick="openFolder(event, '`+ jd.perentfolder.replace(/([/'"])/g, "&quot;")+`', true)" class="cell">
+            <a href="">Perent folder</a>
+          </div>
+          <div class="cell"></div>
+          <div class="cell"></div>
+        </div>
+        `;
 
-   for (i = 0; i < jd.files.length;i++){
-       tableTxt=`<div class="row">
-      <div class="cell">
-        <input type="checkbox" name="`+ jd.files[i].name +`"/>
-      </div>
-      <div class="cell">
-        <img src="`+fileIcons.fileIcon+`" alt="[FILE]">
-      </div>
-      <div onclick="location.href='`+rootPath + subFolder + jd.files[i].name+`';" class="cell">
-        <a href="`+rootPath + subFolder + jd.files[i].name+`">`+jd.files[i].name+`</a>
-      </div>
-      <div class="cell">`+jd.files[i].date+`</div>
-      <div class="cell">`+jd.files[i].size+`</div>
-    </div>
-    `;
-       $("#tableHeader").after(tableTxt);
+       for (i = 0; i < jd.folders.length;i++){
+           tableTxt+=`<div class="row">
+          <div class="cell">
+            <input type="checkbox" name="`+jd.folders[i].name+`"/>
+          </div>
+          <div class="cell">
+            <img src="`+fileIcons.folderIcon+`" alt="[FOLDER]">
+          </div>
+          <div onclick="openFolder(event, '`+ jd.folders[i].name.replace(/([/'"])/g, "&quot;") +`', false)" class="cell">
+             <a href="">`+jd.folders[i].name+`</a>
+          </div>
+          <div class="cell">`+jd.folders[i].date+`</div>
+          <div class="cell">`+jd.folders[i].size+`</div>
+        </div>
+        `;
+           //$("#tableHeader").after(tableTxt);
+       }
+
+       for (i = 0; i < jd.files.length;i++){
+           tableTxt+=`<div class="row">
+          <div class="cell">
+            <input type="checkbox" name="`+ jd.files[i].name +`"/>
+          </div>
+          <div class="cell">
+            <img src="`+fileIcons.fileIcon+`" alt="[FILE]">
+          </div>
+          <div onclick="location.href='`+rootPath + subFolder + jd.files[i].name+`';" class="cell">
+            <a href="`+rootPath + subFolder + jd.files[i].name+`">`+jd.files[i].name+`</a>
+          </div>
+          <div class="cell">`+jd.files[i].date+`</div>
+          <div class="cell">`+jd.files[i].size+`</div>
+        </div>
+        `;
+           //$("#tableHeader").after(tableTxt);
+       }
+       folderContent = jd;
+       filesReady = true;
    }
-   for (i = 0; i < jd.folders.length;i++){
-       tableTxt=`<div class="row">
-      <div class="cell">
-        <input type="checkbox" name="`+jd.folders[i].name+`"/>
-      </div>
-      <div class="cell">
-        <img src="`+fileIcons.folderIcon+`" alt="[FOLDER]">
-      </div>
-      <div onclick="openFolder(event, '`+ jd.folders[i].name.replace(/([/'"])/g, "&quot;") +`', false)" class="cell">
-         <a href="">`+jd.folders[i].name+`</a>
-      </div>
-      <div class="cell">`+jd.folders[i].date+`</div>
-      <div class="cell">`+jd.folders[i].size+`</div>
-    </div>
-    `;
-       $("#tableHeader").after(tableTxt);
-   }
-   tableTxt=`<div class="row">
-      <div class="cell">
-        <input type="checkbox" name="all" id="checkAllChBox"/>
-      </div>
-      <div class="cell">
-        <img src="`+fileIcons.backIcon+`" alt="[PARENTDIR]">
-      </div>
-      <div onclick="openFolder(event, '`+ jd.perentfolder.replace(/([/'"])/g, "&quot;")+`', true)" class="cell">
-        <a href="">Perent folder</a>
-      </div>
-      <div class="cell"></div>
-      <div class="cell"></div>
-    </div>
-    `;
+   $("#fileHolder").html(emptyTable);
+   $("#indexOf").text("Index of " + subFolder);
+   $('#blankIco').attr("src", fileIcons.blankIcon);
    $("#tableHeader").after(tableTxt);
  
    $('#checkAllChBox').click(function() {
@@ -116,20 +123,16 @@ function fillTable(jd){
           }
        });
    });
-   folderContent = jd;
-   filesReady = true;
+
 }
 
 function listFiles(){
-    $("#fileHolder").html(emptyTable);
     if(fileIconsReady == false){
        $.getJSON(rootPath + "/getFileImages", setFilefileIcons);
     }
-	url = rootPath + subFolder + "?client=JS";
+    url = rootPath + subFolder + "?client=JS";
     filesReady = false;
     $.getJSON(url, fillTable);
-    $("#indexOf").text("Index of " + subFolder);
-
 }
 
 function openFolder(evt, folderUrl, upFolder){
