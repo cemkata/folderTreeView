@@ -23,6 +23,7 @@ xpopup
   -webkit-transition: background-color 0.2s;
   -moz-transition: background-color 0.2s;
   transition: background-color 0.2s;
+  cursor: pointer;
 }
 .cd-popup-container .cd-buttons li:first-child{
   background: #fc7169;
