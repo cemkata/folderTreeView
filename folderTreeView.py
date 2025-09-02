@@ -7,7 +7,7 @@ import re
 import collections
 
 app = Bottle()
-ver = 3.9
+ver = 4.0
 
 cnfgFile = "config.ini"
 
@@ -49,7 +49,7 @@ def filesFolders(filepath = '/'):
 @app.route('/getFiles')
 def filesFolders(filepath = '/'):
    if not dicts[selcetedDict] or updateInterval == 0:
-      dicts[selcetedDict] = path_to_dict(serverRoot)
+      dicts[selcetedDict] = path_to_dict(serverRoot, webSort = False)
       dicts[selcetedDict]['timestamp'] = genTimeStamp()
    return dicts[selcetedDict]
 
@@ -62,7 +62,7 @@ updateTimer = None
 def updateDict():
     global selcetedDict
     didx = (selcetedDict + 1) % 2
-    dicts[didx] = path_to_dict(serverRoot)
+    dicts[didx] = path_to_dict(serverRoot, webSort = False)
     if not dicts[didx]:
         print("Configuration problem")
         from sys import exit
@@ -105,11 +105,11 @@ def path_to_dict(path, webSort = True):
                    else:
                        files.append(fc)
                 if sortFlag is not None:
-                    folders.sort(reverse=(not sortFlag))
-                    files.sort(reverse=(not sortFlag))
+                    folders.sort(reverse=sortFlag, key=sort_condition)
+                    files.sort(reverse=not sortFlag, key=sort_condition)
                     folderContent = folders + files
             for x in folderContent:
-                item = path_to_dict(os.path.join(path,x))
+                item = path_to_dict(os.path.join(path,x), webSort)
                 if item:
                     itemsList.append(item)
             d['children'] = itemsList
@@ -123,7 +123,18 @@ def genTimeStamp():
     now = datetime.now()
     # dd/mm/YY H:M:S
     dt_string = now.strftime("%H:%M:%S %d/%m/%Y")
-    return dt_string	
+    return dt_string
+
+def sort_condition(in_data):
+    pattern = '^\\d+'
+    if re.match(pattern, in_data):
+        if leadingZero:
+            return "0" * (total_number_length - len(re.search(pattern,\
+                          in_data).group(0))) + in_data
+    else:
+        if caseInsensitive:
+            return in_data[0].upper() + in_data[1:]
+    return in_data
 
 if os.path.isfile(cnfgFile):
     import configparser
@@ -148,8 +159,22 @@ if os.path.isfile(cnfgFile):
         sortFlag = False
     else:
         sortFlag = None
-        
-        
+
+    leadingZero = config['DEFAULT']['leadingZero']
+    if leadingZero.lower() == "false":
+        leadingZero = False
+    else:
+        leadingZero = True
+    total_number_length = 10 # maybe read from the config file later
+
+    caseInsensitive = config['DEFAULT']['caseInsensitive']
+    if caseInsensitive.lower() == "true":
+        caseInsensitive = True
+    else:
+        caseInsensitive = False
+
+
+
     fileOrganaserFlag = config['DEFAULT']['fileOrganaserFlag']
     if fileOrganaserFlag.lower() == "true":
         import file_orginiser
@@ -169,8 +194,8 @@ if os.path.isfile(cnfgFile):
     else:
         @app.route('/files/<filepath:path>')
         def fileshandler(filepath = '/'):
-           abort(404, "Not cofiured") 
-           
+           abort(404, "Not cofiured")
+
     log2File = config['APPLOGER']['log2File']
     if log2File.lower() == "true":
         log2File = True
@@ -178,7 +203,7 @@ if os.path.isfile(cnfgFile):
         app_log = config['APPLOGER']['app_log']
     else:
         log2File = False
-    
+
 else:
     print("Using default config")
     port = 8000
@@ -189,6 +214,9 @@ else:
     cnfgSkipExtension = "skipExtension.txt"
     updateInterval = 0;
     sortFlag = None
+    caseInsensitive = False
+    total_number_length = 10
+    leadingZero = True
     log2File = False
     #serverRoot = config['DEFAULT']['serverRoot']
     docFolder, titleFolder = os.path.split(serverRoot)
@@ -214,7 +242,7 @@ for sk in skipedContent:
     else:
         print(f"File not found {sk['config']}")
         print(f"  Skiping {sk['cnfigName']} configuration")
-        
+
 skipPaths     = skipedContent[0]['ignoreList']
 skipPrefix    = skipedContent[1]['ignoreList']
 skipExtension = skipedContent[2]['ignoreList']

@@ -82,7 +82,9 @@ def getFolderContent(filepath):
     foldersList = []
     fileList = []
     try:
-        for fn in os.listdir(os.path.join(mediaRootFolder, filepath)):
+        folder_content = os.listdir(os.path.join(mediaRootFolder, filepath))
+        folder_content.sort(key=sort_condition)
+        for fn in folder_content:
            if(checkHidenFiles(fn)):
               fileName = os.path.join(mediaRootFolder, filepath, fn)
               date = time.strftime('%Y-%M-%d %H:%M', time.localtime(os.path.getmtime(fileName)))
@@ -98,7 +100,19 @@ def getFolderContent(filepath):
     except FileNotFoundError:
         temp = {'error': 'Not found'}
     return temp
-       
+
+def sort_condition(in_data):
+    pattern = '^\\d+'
+    total_number_length = 10
+    if re.match(pattern, in_data):
+        print("0" * (total_number_length - len(re.search(pattern,\
+                      in_data).group(0))) + in_data)
+        return "0" * (total_number_length - len(re.search(pattern,\
+                      in_data).group(0))) + in_data
+    else:
+        return in_data[0].upper() + in_data[1:]
+    return in_data
+
 def checkHidenFiles(instring):
     if(instring in skipPaths):
        return False

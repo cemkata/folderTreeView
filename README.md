@@ -15,6 +15,8 @@ How to configure in config.ini
 	- 1,2,3 ... is in munites (no minus (positive))
 	- -1,-2,-4 ... in in hours (negative)
 - sortFlag - Posible values true, false, none
+- leadingZero = True - When sorting should the numbers be filled to 000001.xxxxxx of leave them 1.xxxxxx
+- caseInsensitive = False - Should the file names be sorted by case insensitive
 - fileOrganaserFlag - Posible values true, false
 
 - ***In section FILEORGANISER:***
@@ -38,5 +40,5 @@ To access the the file organiser hold Ctrl + Alt and click in the upper left cor
 You can export the content of the folder as html just start export_folder_2_html.py, the out put file will be store under html_output(folder will be created if doesn't exist).  
 
 ***Versions***  
-*folderTreeView v3.8*  
+*folderTreeView v4.0*  
 *folderTreeView GUI v1.3*  
