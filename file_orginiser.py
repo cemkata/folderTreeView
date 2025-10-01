@@ -105,8 +105,6 @@ def sort_condition(in_data):
     pattern = '^\\d+'
     total_number_length = 10
     if re.match(pattern, in_data):
-        print("0" * (total_number_length - len(re.search(pattern,\
-                      in_data).group(0))) + in_data)
         return "0" * (total_number_length - len(re.search(pattern,\
                       in_data).group(0))) + in_data
     else:
