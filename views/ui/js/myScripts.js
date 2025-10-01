@@ -1,6 +1,6 @@
 var fileIcons;//No need for default value
 var fileIconsReady = false;//No need ???
-const rootPath = "/folderTreeOrganiser";
+const rootPath = "/files";
 var filesReady = false; //Added to cleanVals
 var showDialog = true; //Added to cleanVals
 var fileUpdate = true; //Added to cleanVals
@@ -453,3 +453,4 @@ function clearVars(){
     fileCMDName = 0;
     clearTimeout(showInModalFilesTimer);
 }
+
