@@ -1,6 +1,6 @@
 var fileIcons;//No need for default value
 var fileIconsReady = false;//No need ???
-const rootPath = "/files";
+const rootPath = "/folderTreeOrganiser";
 var filesReady = false; //Added to cleanVals
 var showDialog = true; //Added to cleanVals
 var fileUpdate = true; //Added to cleanVals
@@ -42,6 +42,12 @@ function setFilefileIcons(jd){
 }
 
 function fillTable(jd){
+   if(fileIconsReady == false){
+        setTimeout(function() {
+            fillTable(jd);
+        }, 20);
+        return;
+   }
    let tableTxt = ""
    if (typeof jd.error === "string"){
        tableTxt+=`<div class="row">
@@ -175,7 +181,7 @@ function addDragAndDrop(){
                         e.stopPropagation();
                     }
                 });
-	
+    
     $('#uploadfile').on({
                     dragenter: function(e) {
                         e.stopPropagation();
@@ -232,7 +238,7 @@ function getSelectedFiles(){
           return true;
       }
    }else if (fileNames.length > 0){
-	   return true;
+       return true;
    }
 }
 
@@ -285,10 +291,10 @@ function fileMoveCopyCmd(){
    }
    if(!filesReady){ //Wait until the file list is loaded
       if(jd === "undefined"){
-		  listFiles();
-		  showInModalFilesTimer = setTimeout(fileMoveCopyCmd, 10); // check again in few seconds
-		  return;
-	  }
+          listFiles();
+          showInModalFilesTimer = setTimeout(fileMoveCopyCmd, 10); // check again in few seconds
+          return;
+      }
    }
    var msg ="<h4>Do you want to " + fileCMDName +" selected files to "+subFolder+"?</h4>";
    msg += `<div id="fileHolderModal">`;
@@ -445,5 +451,5 @@ function clearVars(){
     fileUpdate = true;
     filesReady = false;
     fileCMDName = 0;
-	clearTimeout(showInModalFilesTimer);
+    clearTimeout(showInModalFilesTimer);
 }
