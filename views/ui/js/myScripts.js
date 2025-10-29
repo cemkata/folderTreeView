@@ -42,12 +42,6 @@ function setFilefileIcons(jd){
 }
 
 function fillTable(jd){
-   if(fileIconsReady == false){
-        setTimeout(function() {
-            fillTable(jd);
-        }, 20);
-        return;
-   }
    let tableTxt = ""
    if (typeof jd.error === "string"){
        tableTxt+=`<div class="row">
@@ -181,7 +175,7 @@ function addDragAndDrop(){
                         e.stopPropagation();
                     }
                 });
-    
+	
     $('#uploadfile').on({
                     dragenter: function(e) {
                         e.stopPropagation();
@@ -194,8 +188,8 @@ function addDragAndDrop(){
                     drop: function(e) {
                         e.stopPropagation();
                         e.preventDefault();
-                        var file = e.originalEvent.dataTransfer.files;
-                        sendFile(file[0]);
+                        var files = e.originalEvent.dataTransfer.files;
+                        sendFiles(files);
                         $('#uploadfile').removeClass('upload-area-hovering').addClass('upload-area');
                     }
                 });
@@ -238,7 +232,7 @@ function getSelectedFiles(){
           return true;
       }
    }else if (fileNames.length > 0){
-       return true;
+	   return true;
    }
 }
 
@@ -251,7 +245,7 @@ function uploadFileCmd(){
   <input type="file" name="upload" id="fileSelectorInput" style="opacity:0;"/>
 </form>`
    msg += `</div>`;
-   dialog(msg, sendFile, clearVars);
+   dialog(msg, sendFiles, clearVars);
    $("#fileSelector").click(function(e){
        e.preventDefault();
        $("#fileSelectorInput").trigger('click');
@@ -291,10 +285,10 @@ function fileMoveCopyCmd(){
    }
    if(!filesReady){ //Wait until the file list is loaded
       if(jd === "undefined"){
-          listFiles();
-          showInModalFilesTimer = setTimeout(fileMoveCopyCmd, 10); // check again in few seconds
-          return;
-      }
+		  listFiles();
+		  showInModalFilesTimer = setTimeout(fileMoveCopyCmd, 10); // check again in few seconds
+		  return;
+	  }
    }
    var msg ="<h4>Do you want to " + fileCMDName +" selected files to "+subFolder+"?</h4>";
    msg += `<div id="fileHolderModal">`;
@@ -358,21 +352,34 @@ function sendFileCMD(){
     postCMDArg();
 }
 
-function sendFile(inputFile){
+function sendFiles(inputFiles){
     $("body").append(waitingAnimation);
     $("#modalBar").css({ display: "block" });
 
     var formData = new FormData();
-    if (inputFile === undefined){
-        formData.append('upload', $('input[type=file]')[0].files[0]);
-    }else{
-        formData.append('upload', inputFile);
+    if (inputFiles === undefined){
+        inputFiles = $('input[type=file]')[0].files[0];
     }
+
+    for (var i = 0; i < inputFiles.length; i++) {
+        if(inputFiles[i].size == 0 && inputFiles[i].type == ''){
+            $("#modalBar").remove();
+            listFiles();
+            var msg = `<div id="fileHolderModal">`;
+            msg +="Folder upload is not supported\n";
+            msg += `</div>`;
+            dialog(msg, passFunction, passFunction);
+            clearVars();
+            return
+        }
+        formData.append("upload", inputFiles[i]);
+    }
+
 
     formData.append('targetFolder', subFolder);
 
     $.ajax({
-        url: rootPath+'/uploadFile',  
+        url: rootPath+'/uploadFiles',
         type: 'POST',
         data: formData,
         success: function (data) {
@@ -451,6 +458,5 @@ function clearVars(){
     fileUpdate = true;
     filesReady = false;
     fileCMDName = 0;
-    clearTimeout(showInModalFilesTimer);
+	clearTimeout(showInModalFilesTimer);
 }
-

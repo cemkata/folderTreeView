@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-from bottle import Bottle, request, redirect, template, static_file, HTTPError
+from bottle import Bottle, request, redirect, template, static_file, HTTPError, BaseRequest
 import json
 import os
 import time
@@ -7,7 +7,9 @@ import shutil
 from urllib.parse import unquote
 import re
 
-ver="2.1"
+BaseRequest.MEMFILE_MAX = BaseRequest.MEMFILE_MAX * 1024
+
+ver="2.2"
 
 app = Bottle()
 
@@ -21,20 +23,21 @@ skipExtension = []
 
 fileComands = ['move', 'copy', 'delete', 'rename', 'folder']
 
-@app.route('/uploadFile', method='POST')
+@app.route('/uploadFiles', method='POST')
 def do_upload():
     targetFolder = request.forms.get('targetFolder')
-    upload = request.files.get('upload')
-    name, ext = os.path.splitext(upload.filename)
-    if ext.lower() in ('.zip', '.rar', '.exe', '.bat', '.vbs', '.com'):
-        return "File extension not allowed."
     targetFolder = targetFolder.replace("/","",1)# strip the first slash "/"
     targetFolder = os.path.join(mediaRootFolder, targetFolder)
     if not os.path.exists(targetFolder):
         os.makedirs(targetFolder)
-    file_path = os.path.join(targetFolder, upload.filename)
-    upload.save(file_path)
-    return "File successfully uploaded"
+    uploads = request.files.getall('upload')
+    for upload in uploads:
+        name, ext = os.path.splitext(upload.filename)
+        if ext.lower() in ('.zip', '.rar', '.exe', '.bat', '.vbs', '.com'):
+            return "File extension not allowed."
+        file_path = os.path.join(targetFolder, upload.filename)
+        upload.save(file_path)
+    return "Files successfully uploaded"
 
 @app.route('/fileCmd', method='post')
 def fileCmd():
