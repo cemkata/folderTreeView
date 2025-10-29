@@ -41,4 +41,5 @@ You can export the content of the folder as html just start export_folder_2_html
 
 ***Versions***  
 *folderTreeView v4.0*  
+*filesOrganiser v2.2*  
 *folderTreeView GUI v1.3*  
