@@ -42,6 +42,12 @@ function setFilefileIcons(jd){
 }
 
 function fillTable(jd){
+   if(fileIconsReady == false){
+        setTimeout(function() {
+            fillTable(jd);
+        }, 20);
+        return;
+   }
    let tableTxt = ""
    if (typeof jd.error === "string"){
        tableTxt+=`<div class="row">
@@ -460,3 +466,4 @@ function clearVars(){
     fileCMDName = 0;
 	clearTimeout(showInModalFilesTimer);
 }
+
